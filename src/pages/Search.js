@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 function Search() {
   const CLIENT_ID = "2df711edf9454f86b0f5fa42ecca3c89";
@@ -69,16 +70,55 @@ function Search() {
       </div>
     )); // 우리는 div를 호출된 키로 반환하여 아티스트.id로 설정할 것이다.
   };
+
+  const StyledTitle = styled.h1`
+    font-size: 50px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  `;
+  const StyledSubTitle = styled.h2`
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 50px;
+  `;
+
+  const StyledLogin = styled.a`
+    a:visited {
+      color: none;
+      text-decoration: none;
+    }
+    a:link {
+      text-decoration: none;
+    }
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    max-width: 310px;
+    margin: 10px 0 0;
+    padding: 10px 22px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    background-color: #ab4d33;
+  `;
+
+  const StyledLoginPlz = styled.h2`
+    font-size: 30px;
+    margin-top: 40px;
+  `;
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Digging With Spotify</h1>
+        <StyledTitle>새로운 음악을 찾는 즐거움</StyledTitle>
+        <StyledSubTitle>디깅은 저희에게 맡겨보세요</StyledSubTitle>
         {!token ? (
-          <a
+          <StyledLogin
             href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
           >
-            Login to Spotify
-          </a>
+            Spotify 계정으로 로그인
+          </StyledLogin>
         ) : (
           <button onClick={logout}>Logout</button> // 로그아웃 버튼 추가
         )}
@@ -90,7 +130,9 @@ function Search() {
             <button type={"submit"}>Search</button>
           </form>
         ) : (
-          <h2>Please Login</h2>
+          <StyledLoginPlz>
+            로그인 전에는 서비스 사용이 어렵습니다&nbsp;😭
+          </StyledLoginPlz>
         )}
 
         {renderArtists()}
