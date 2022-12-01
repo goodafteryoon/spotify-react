@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  color: white;
+  height: 70px;
+  width: 100%;
+  background-color: #05161c;
+  justify-content: center; /*네비바 가운데로*/
+  z-index: 10; /* 헤더가 최상위로 보이도록 */
+  /* border-bottom: 2px solid #e1e2e3; */
+}
+
+.headerWrapper {
+  width: 1180px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* border: 2px solid blue; */
+  justify-content: space-between;
+}
+.navItem {
+  /* border: 2px solid red; */
+  display: flex;
+}
+.navList {
+  /* border: 2px solid blanchedalmond; */
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 30px;
+}
