@@ -40,14 +40,6 @@
   /* border: 2px solid red; */
 }
 
-/* .main {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: yellowgreen;
-} */
 #video {
   position: fixed;
   z-index: -1;

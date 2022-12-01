@@ -2,16 +2,58 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+// import { useNavigate, useSearchParams } from "react-router-dom";
+
+const StyledTitle = styled.h1`
+  font-size: 50px;
+  font-weight: 800;
+  margin-bottom: 23px;
+`;
+const StyledSubTitle = styled.h2`
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 50px;
+`;
+
+const StyledLogin = styled.a`
+  a:visited {
+    color: none;
+    text-decoration: none;
+  }
+  a:link {
+    text-decoration: none;
+  }
+  a:hover {
+    color: blue;
+  }
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  max-width: 310px;
+  margin: 10px 0 0;
+  padding: 15px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  background-color: #ab4d33;
+`;
+
+const StyledLoginPlz = styled.h2`
+  font-size: 30px;
+  margin-top: 40px;
+`;
 
 function Search() {
-  const CLIENT_ID = "2df711edf9454f86b0f5fa42ecca3c89";
-  const REDIRECT_URI = "http://localhost:3000";
-  const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize"; // 엔드포인트
-  const RESPONSE_TYPE = "token"; // 토큰이 될 응답유형도 필요하다
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const AUTH_ENDPOINT = process.env.REACT_APP_AUTH_ENDPOINT; // 엔드포인트
+  const RESPONSE_TYPE = process.env.REACT_APP_RESPONSE_TYPE; // 토큰이 될 응답유형도 필요하다
 
   const [token, setToken] = useState(""); // 스트링 유형의 토큰 변수를 만들어준다.
   const [searchKey, setSearchKey] = useState(""); // 아티스트를 서치할 상태 변수 만들기
   const [artists, setArtists] = useState([]); // 아티스트를 받아올 상태 변수 선언, 빈 배열로 설정해준다
+  const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
     const hash = window.location.hash; // url에서 가져온 해쉬를 저장할 변수 선언
@@ -36,6 +78,7 @@ function Search() {
   const logout = () => {
     setToken("");
     window.localStorage.removeItem("token");
+    setArtists([]); // 로그아웃 버튼 눌렀을 때 setArtists를 빈 배열로 반환 => 남아있던 데이터 지우는 걸 이런식으로 해도 되나..?
   };
 
   // pass also event(it means "e")
@@ -50,6 +93,8 @@ function Search() {
       params: {
         q: searchKey,
         type: "artist",
+        limit: 4,
+
         // 아티스트를 검색하고 있기 때문에 먼저 검색 키가 될 쿼리, 아티스트가 될 유형을 쿼리하는 매개변수를 전달한다.
       },
     });
@@ -61,52 +106,30 @@ function Search() {
     // 각 아티스트에 대해 아티스트 맵함수를 반환한다.
     return artists.map((artist) => (
       <div key={artist.id}>
-        {artist.images.length ? (
-          <img width={"10%"} src={artist.images[0].url} alt="" />
+        {artist.images.length > 0 ? (
+          <>
+            <img width="10%" src={artist.images[0].url} alt="" />
+            <span> {artist.name}</span>
+          </>
         ) : (
-          <div>No Image</div>
+          <>
+            <p>이미지 없음</p>
+            <span>{artist.name}</span>
+          </>
         )}
-        {artist.name}
       </div>
-    )); // 우리는 div를 호출된 키로 반환하여 아티스트.id로 설정할 것이다.
+    ));
+    // 우리는 div를 호출된 키로 반환하여 아티스트.id로 설정할 것이다.
   };
 
-  const StyledTitle = styled.h1`
-    font-size: 50px;
-    font-weight: 800;
-    margin-bottom: 20px;
-  `;
-  const StyledSubTitle = styled.h2`
-    font-size: 40px;
-    font-weight: 800;
-    margin-bottom: 50px;
-  `;
-
-  const StyledLogin = styled.a`
-    a:visited {
-      color: none;
-      text-decoration: none;
-    }
-    a:link {
-      text-decoration: none;
-    }
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    max-width: 310px;
-    margin: 10px 0 0;
-    padding: 10px 22px;
-    border-radius: 50px;
-    text-decoration: none;
-    color: white;
-    text-align: center;
-    background-color: #ab4d33;
-  `;
-
-  const StyledLoginPlz = styled.h2`
-    font-size: 30px;
-    margin-top: 40px;
-  `;
+  // const navigate = useNavigate();
+  // const onKeyPress = (e) => {
+  //   e.preventDefault();
+  //   if (!searchKey) alert("가수를 입력하세요.");
+  //   else {
+  //     navigate(`/search?artist=${searchKey}`);
+  //   }
+  // };
 
   return (
     <div className="App">
@@ -126,8 +149,9 @@ function Search() {
         {token ? (
           // 이 form을 우리가 제출할 때 we perform SearchArtist 할 것이다.
           <form onSubmit={searchArtists}>
+            {/* target = */}
             <input type="text" onChange={(e) => setSearchKey(e.target.value)} />
-            <button type={"submit"}>Search</button>
+            <button type="submit">Search</button>
           </form>
         ) : (
           <StyledLoginPlz>
