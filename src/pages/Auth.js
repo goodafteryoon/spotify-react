@@ -1,7 +1,7 @@
 // Before Login ? Render This Auth Component
 import styled from "styled-components";
 
-const StyledLoginPlzBtn = styled.a`
+const StyledLoginBtn = styled.a`
   a:visited {
     color: none;
     text-decoration: none;
@@ -33,11 +33,11 @@ function Auth() {
 
   return (
     <>
-      <StyledLoginPlzBtn
+      <StyledLoginBtn
         href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
       >
         Spotify 계정으로 로그인
-      </StyledLoginPlzBtn>
+      </StyledLoginBtn>
     </>
   );
 }

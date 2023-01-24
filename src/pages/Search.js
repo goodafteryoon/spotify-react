@@ -66,7 +66,6 @@ function Search() {
         q: searchKey,
         type: "artist",
         limit: 4,
-
         // 아티스트를 검색하고 있기 때문에 먼저 검색 키가 될 쿼리, 아티스트가 될 유형을 쿼리하는 매개변수를 전달한다.
       },
     });
